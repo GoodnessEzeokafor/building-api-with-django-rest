@@ -81,6 +81,7 @@ class SignupView(FormView):
 
 class AddressListView(LoginRequiredMixin, ListView):
     model = models.Address
+    template_name="address_list.html"
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
@@ -88,12 +89,13 @@ class AddressListView(LoginRequiredMixin, ListView):
 
 
 class AddressCreateView(LoginRequiredMixin, CreateView):
-    models = models.Address
+    model = models.Address
+    template_name="address_form.html"
     fields = [
         "name",
         "address1",
         "address2",
-        "zip_codes",
+        "zip_code",
         "city",
         "country"
     ]
@@ -111,6 +113,8 @@ class AddressCreateView(LoginRequiredMixin, CreateView):
 
 class AddressUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Address
+    template_name="address_update.html"
+
     fields = [
         "name",
         "address1",
@@ -130,7 +134,7 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Address
     success_url = reverse_lazy("address_list")
-
+    template_name="address_ confirm_delete.html"
 
     def get_queryset(self):
         return self.models.objects.filter(user=self.request.user)
