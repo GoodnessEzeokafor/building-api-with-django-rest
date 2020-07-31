@@ -6,7 +6,10 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
 
-    <div class="form-group">
+    {% include "includes/field.html" with field=form.email %}
+    {% include "includes/field.html" with field=form.password %}
+
+    <!-- <div class="form-group">
         {{ form.email.label_tag }}
         <input type="email"
 
@@ -34,7 +37,7 @@
             {{ form.password.errors }}
           </div>
         {% endif %}
-      </div>
+      </div> -->
 <button type="submit" class="btn btn-­primary">Submit</button>
 </form>
 {% endblock %}

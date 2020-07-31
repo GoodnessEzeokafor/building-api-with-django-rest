@@ -21,8 +21,20 @@ from . import models
 from . import views
 from django.contrib.auth import views as auth_views 
 from main import forms
+from rest_framework import routers
+from main import endpoints
+
+router = routers.DefaultRouter()
+router.register(r'orderlines', endpoints.PaidOrderLineViewSet)
+router.register(r'orders', endpoints.PaidOrderViewSet)
+
 
 urlpatterns = [
+    path("order-dashboard/", views.OrderView.as_view(), name="order_dashboard"),
+    path("order/done/", TemplateView.as_view(template_name="order_done.html"), name="checkout_done"),
+    path("order/address_select/", views.AddressSelectionView.as_view(), name="address_select"),
+    path("basket/", views.manage_basket, name="basket"),
+    path("add_to_basket/",views.add_to_basket, name="add_to_basket"),
     path("address/",
     views.AddressListView.as_view(),
     name="address_list"),
@@ -54,7 +66,7 @@ urlpatterns = [
     path('', 
         TemplateView.as_view(template_name="home.html"),
         name="home"),
-
+    path('api/', include(router.urls)),
 ]
 
 

@@ -30,6 +30,13 @@ ALLOWED_HOSTS = []
 
 # Application definition
 AUTH_USER_MODEL = "main.User"
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'static/bundles/webpack-stats.json'),
+    }
+}
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,12 +46,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #local apps
+        'debug_toolbar',
+    'django_extensions',
+    'webpack_loader',
+    'django_filters',
+        'django_tables2',
+            'widget_tweaks',
+                'rest_framework',
     "main.apps.MainConfig",
 
-    #third party
-    "rest_framework"
+
 
 ]
+INTERNAL_IPS = ['127.0.0.1']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +68,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
+    'main.middlewares.basket_middleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -75,7 +92,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
-
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap.html'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -147,3 +164,13 @@ else:
     EMAIL_BACKEND = (
         "django.core.mail.backends.console.EmailBackend"
     )
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework.authentication.SessionAuthentication','rest_framework.authentication.BasicAuthentication'),
+    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.DjangoModelPermissions',),
+    'DEFAULT_FILTER_BACKENDS':('django_filters.rest_framework.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
